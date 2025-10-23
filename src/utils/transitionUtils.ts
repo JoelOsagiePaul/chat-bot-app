@@ -1,6 +1,3 @@
-/**
- * Transition utilities for consistent animations across the app
- */
 
 export const transitionConfig = {
   enter: 225,
@@ -13,9 +10,7 @@ export const transitionConfig = {
   },
 } as const;
 
-/**
- * Creates transition string for CSS
- */
+
 export const createTransition = (
   property: string | string[],
   duration: number = transitionConfig.enter,
@@ -27,9 +22,7 @@ export const createTransition = (
     .join(', ');
 };
 
-/**
- * Standard animation sequences
- */
+
 export const animations = {
   fadeIn: {
     '@keyframes fadeIn': {
@@ -69,9 +62,7 @@ export const animations = {
   },
 } as const;
 
-/**
- * Transition presets for common use cases
- */
+
 export const transitionPresets = {
   fab: {
     enter: transitionConfig.enter,
