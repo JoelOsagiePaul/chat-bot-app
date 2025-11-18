@@ -1,8 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
-/**
- * FAB positioning constants
- */
+
 export const FAB_CONFIG = {
   size: 56, // Default FAB size
   smallSize: 40, // Small FAB size
@@ -20,9 +18,7 @@ export interface ChatWindowPosition {
   right: number;
 }
 
-/**
- * Custom hook for managing FAB positioning and chat window placement
- */
+
 export const useFabPosition = () => {
   const [fabPosition, setFabPosition] = useState<FabPosition>({
     bottom: FAB_CONFIG.spacing,
@@ -31,9 +27,7 @@ export const useFabPosition = () => {
 
   const fabRef = useRef<HTMLButtonElement>(null);
 
-  /**
-   * Calculate chat window position based on FAB position
-   */
+  
   const chatWindowPosition = useMemo((): ChatWindowPosition => {
     return {
       bottom: fabPosition.bottom + FAB_CONFIG.size + FAB_CONFIG.chatWindowOffset,
@@ -41,9 +35,7 @@ export const useFabPosition = () => {
     };
   }, [fabPosition]);
 
-  /**
-   * Update FAB position from DOM element
-   */
+  
   const updateFabPosition = useCallback(() => {
     if (fabRef.current) {
       const rect = fabRef.current.getBoundingClientRect();
@@ -54,9 +46,7 @@ export const useFabPosition = () => {
     }
   }, []);
 
-  /**
-   * Handle window resize
-   */
+  
   useEffect(() => {
     updateFabPosition();
     
@@ -78,9 +68,7 @@ export const useFabPosition = () => {
   };
 };
 
-/**
- * Hook for calculating responsive chat window dimensions
- */
+
 export const useChatWindowDimensions = () => {
   const [dimensions, setDimensions] = useState({
     width: 400,

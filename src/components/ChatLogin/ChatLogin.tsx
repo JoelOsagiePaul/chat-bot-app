@@ -7,11 +7,7 @@ interface ChatLoginProps {
   onLoginSuccess: (token: string) => void;
 }
 
-/**
- * ChatLogin Component
- * 
- * Simple login form for the chatbot to authenticate users
- */
+
 export const ChatLogin: React.FC<ChatLoginProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
