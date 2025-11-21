@@ -46,7 +46,23 @@ export const parseMessage = (text: string): ParsedElement[] => {
     const line = lines[i];
 
     // Code block detection
-if (line.trim().startsWith('
+    if (line.trim().startsWith('```')) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeLanguage = line.trim().slice(3).trim();
+        currentCodeBlock = [];
+      } else {
+        inCodeBlock = false;
+        elements.push({
+          type: 'codeBlock',
+          content: currentCodeBlock.join('\n'),
+          language: codeLanguage,
+        });
+        currentCodeBlock = [];
+        codeLanguage = '';
+      }
+      continue;
+    }
 
     if (inCodeBlock) {
       currentCodeBlock.push(line);
