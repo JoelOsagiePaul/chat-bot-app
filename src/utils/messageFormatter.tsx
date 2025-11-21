@@ -24,8 +24,8 @@ const preprocessEventTags = (text: string): string => {
     .replace(/<i id='date'>Date:\s*([^<]+)<\/i>/gi, '📅 **Date:** $1')
     .replace(/<i id='location'>Location:\s*([^<]+)<\/i>/gi, '📍 **Location:** $1')
     .replace(/<i id='name'>([^<]+)<\/i>/gi, '🎯 **Event:** $1')
-    .replace(/<i id='price'>Tickets:\s*\[Get Tickets\]\s*\(([^)]+)\)<\/i>/gi, '🎟️ **Tickets:** [$1]')
-    .replace(/<i id='price'>Tickets:\s*\[Get Tickets\]<\/i>/gi, '🎟️ **Tickets:** [Get Tickets]')
+    .replace(/<i id='price'>Tickets:\s*\[Get Tickets\]\s*\(([^)]+)\)<\/i>/gi, '🎟️ **Tickets:** [Get Tickets]($1)')
+    .replace(/<i id='price'>Tickets:\s*\[Get Tickets\]<\/i>/gi, '🎟️ **Tickets:** Get Tickets')
     .replace(/<i id='description'>([^<]+)<\/i>/gi, '📝 **Details:** $1')
     // Generic fallback for any other <i id='...'> tags
     .replace(/<i id='([^']+)'>([^<]+)<\/i>/gi, '**$1:** $2')
@@ -46,23 +46,7 @@ export const parseMessage = (text: string): ParsedElement[] => {
     const line = lines[i];
 
     // Code block detection
-    if (line.trim().startsWith('```')) {
-      if (!inCodeBlock) {
-        inCodeBlock = true;
-        codeLanguage = line.trim().slice(3).trim();
-        currentCodeBlock = [];
-      } else {
-        inCodeBlock = false;
-        elements.push({
-          type: 'codeBlock',
-          content: currentCodeBlock.join('\n'),
-          language: codeLanguage,
-        });
-        currentCodeBlock = [];
-        codeLanguage = '';
-      }
-      continue;
-    }
+if (line.trim().startsWith('
 
     if (inCodeBlock) {
       currentCodeBlock.push(line);

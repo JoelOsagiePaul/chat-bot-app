@@ -70,7 +70,9 @@ export const MessageArea = styled(Box)(({ theme }) => ({
   overflowY: 'auto',
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.default,
-  scrollBehavior: 'smooth',
+  '@media (prefers-reduced-motion: no-preference)': {
+    scrollBehavior: 'smooth',
+  },
   
   '&::-webkit-scrollbar': {
     width: '10px',
