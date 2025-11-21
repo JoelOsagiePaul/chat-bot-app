@@ -1,51 +1,26 @@
 import React, { memo, useMemo } from 'react';
-import { Box, Paper, Typography, Link } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import type { Message } from '../../types/chatbot';
 import { animations } from '../../utils/transitionUtils';
+import { parseMessage, renderMessageElement } from '../../utils/messageFormatter';
 
 interface ChatMessageProps {
   message: Message;
 }
 
 /**
- * Optimized ChatMessage component with memoization and clickable links
+ * Optimized ChatMessage component with rich text formatting support
+ * Supports: headings, lists, code blocks, bold, italic, inline code, and links
  */
 export const ChatMessage: React.FC<ChatMessageProps> = memo(({ message }) => {
   const isUser = message.sender === 'user';
 
   /**
-   * Convert URLs in text to clickable links (memoized for performance)
+   * Parse and render formatted message content (memoized for performance)
    */
-  const renderMessageWithLinks = useMemo(() => {
-    const text = message.text;
-    // Regex to match URLs (http, https, and www)
-    const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)/g;
-    const parts = text.split(urlRegex).filter(Boolean);
-
-    return parts.map((part, index) => {
-      // Check if this part is a URL
-      if (part.match(urlRegex)) {
-        const url = part.startsWith('www.') ? `https://${part}` : part;
-        return (
-          <Link
-            key={index}
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{
-              color: isUser ? 'rgba(255, 255, 255, 0.9)' : 'secondary.main',
-              textDecoration: 'underline',
-              '&:hover': {
-                color: isUser ? '#ffffff' : 'secondary.light',
-              },
-            }}
-          >
-            {part}
-          </Link>
-        );
-      }
-      return <span key={index}>{part}</span>;
-    });
+  const renderedContent = useMemo(() => {
+    const elements = parseMessage(message.text);
+    return elements.map((element, index) => renderMessageElement(element, index, isUser));
   }, [message.text, isUser]);
 
   return (
@@ -58,39 +33,57 @@ export const ChatMessage: React.FC<ChatMessageProps> = memo(({ message }) => {
       }}
     >
       <Paper
-        elevation={1}
+        elevation={isUser ? 2 : 1}
         sx={{
-          px: 2,
-          py: 1.5,
-          maxWidth: '75%',
-          backgroundColor: isUser ? 'secondary.main' : 'background.paper',
+          px: 2.5,
+          py: 2,
+          maxWidth: '80%',
+          backgroundColor: isUser 
+            ? 'secondary.main' 
+            : 'background.paper',
           color: isUser ? 'secondary.contrastText' : 'text.primary',
-          borderRadius: 2,
-          borderTopRightRadius: isUser ? 0 : 2,
-          borderTopLeftRadius: isUser ? 2 : 0,
-          border: isUser ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: 2.5,
+          borderTopRightRadius: isUser ? 0 : 2.5,
+          borderTopLeftRadius: isUser ? 2.5 : 0,
+          border: isUser ? 'none' : '1px solid rgba(139, 92, 246, 0.15)',
+          boxShadow: isUser 
+            ? '0 2px 8px rgba(139, 92, 246, 0.3)' 
+            : '0 2px 8px rgba(0, 0, 0, 0.2)',
+          transition: 'all 0.2s ease-in-out',
+          '&:hover': {
+            boxShadow: isUser 
+              ? '0 4px 12px rgba(139, 92, 246, 0.4)' 
+              : '0 4px 12px rgba(0, 0, 0, 0.3)',
+          },
         }}
       >
-        <Typography 
-          variant="body1" 
+        <Box
           sx={{ 
             wordBreak: 'break-word',
-            whiteSpace: 'pre-wrap',
+            lineHeight: 1.6,
             '& i[id]': {
               fontStyle: 'normal',
               marginRight: '4px',
             },
+            '& > *:first-of-type': {
+              mt: 0,
+            },
+            '& > *:last-child': {
+              mb: 0,
+            },
           }}
         >
-          {renderMessageWithLinks}
-        </Typography>
+          {renderedContent}
+        </Box>
         <Typography
           variant="caption"
           sx={{
             display: 'block',
-            mt: 0.5,
-            opacity: 0.7,
+            mt: 1.5,
+            opacity: 0.6,
             fontSize: '0.7rem',
+            textAlign: 'right',
+            fontStyle: 'italic',
           }}
         >
           {message.timestamp.toLocaleTimeString([], {

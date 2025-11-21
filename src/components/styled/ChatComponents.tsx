@@ -2,9 +2,7 @@ import { styled } from '@mui/material/styles';
 import { Fab, Paper, Box } from '@mui/material';
 import { transitionConfig } from '../../utils/transitionUtils';
 
-/**
- * Styled FAB with gradient and consistent transitions
- */
+
 export const StyledFab = styled(Fab)(() => ({
   position: 'fixed',
   zIndex: 1300,
@@ -23,18 +21,14 @@ export const StyledFab = styled(Fab)(() => ({
   },
 }));
 
-/**
- * Styled close FAB with consistent styling
- */
+
 export const StyledCloseFab = styled(Fab)(() => ({
   position: 'fixed',
   zIndex: 1400,
   transition: `all ${transitionConfig.enter}ms ${transitionConfig.easing.easeInOut}`,
 }));
 
-/**
- * Chat window container with optimized positioning
- */
+
 export const ChatWindowContainer = styled(Box)(({ theme }) => ({
   position: 'fixed',
   zIndex: 1350,
@@ -51,9 +45,7 @@ export const ChatWindowContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-/**
- * Chat window paper with consistent styling
- */
+
 export const ChatWindowPaper = styled(Paper)(({ theme }) => ({
   width: 400,
   height: 600,
@@ -72,26 +64,29 @@ export const ChatWindowPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-/**
- * Message area with optimized scrolling
- */
+
 export const MessageArea = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   overflowY: 'auto',
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.default,
+  scrollBehavior: 'smooth',
   
   '&::-webkit-scrollbar': {
-    width: '8px',
+    width: '10px',
   },
   '&::-webkit-scrollbar-track': {
-    background: 'transparent',
+    background: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: '5px',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: 'rgba(139, 92, 246, 0.3)',
-    borderRadius: '4px',
+    background: 'linear-gradient(180deg, rgba(139, 92, 246, 0.4) 0%, rgba(124, 58, 237, 0.4) 100%)',
+    borderRadius: '5px',
+    border: '2px solid transparent',
+    backgroundClip: 'content-box',
   },
   '&::-webkit-scrollbar-thumb:hover': {
-    background: 'rgba(139, 92, 246, 0.5)',
+    background: 'linear-gradient(180deg, rgba(139, 92, 246, 0.6) 0%, rgba(124, 58, 237, 0.6) 100%)',
+    backgroundClip: 'content-box',
   },
 }));
